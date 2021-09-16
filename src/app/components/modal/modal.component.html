@@ -1,0 +1,66 @@
+<!-- https://references.xceed365.com/?refid=54DE5065-6C50-4111-B5ED-60CC9FCEE002
+ 
+PSWD ----  5B76006D-7 -->
+
+<ng-container *ngIf="display$ | async as display">
+  <div
+    *ngIf="display === 'open'"
+    class="light-switch"
+    [ngClass]="lightMode ? 'light' : 'dark'"
+    (click)="switchViewMode()"
+  >
+    <span *ngIf="!lightMode" style="color: '#fff'" title="switch to light mode"
+      ><i class="las la-sun la-2x"></i
+    ></span>
+    <span *ngIf="lightMode" style="color: '#000'" title="switch to dark mode"
+      ><i class="las la-moon la-2x"></i
+    ></span>
+  </div>
+  <div
+    class="modal-container"
+    [class.open]="display === 'open'"
+    [ngClass]="lightMode ? 'light' : 'dark'"
+    (click)="closeOnOutsideClick && close()"
+  >
+    <div (click)="$event.stopPropagation()">
+      <button
+        *ngIf="showCloseIcon"
+        class="close"
+        type="button"
+        (click)="close()"
+      >
+        <i class="las la-times"></i>
+      </button>
+
+      <div class="input-container">
+        <div *ngIf="errorMsg" class="error-feedback">
+          <i class="las la-exclamation-triangle la-2x"></i> &nbsp;<span>{{
+            errorMsg
+          }}</span>
+        </div>
+        <div *ngIf="successMsg" class="success-feedback">
+          <i class="las la-check-circle 2x"></i> &nbsp;&nbsp;<span>{{
+            successMsg
+          }}</span>
+        </div>
+        <label [style]="lightMode ? 'color: #000' : 'color: #fff'"
+          >Please Enter Code</label
+        >
+
+        <input [(ngModel)]="code" type="text" />
+      </div>
+
+      <div class="button-container">
+        <button type="button" class="btn red" (click)="onResendCode()">
+          <i *ngIf="processingResend" class="las la-circle-notch la-spin"></i>
+          <i *ngIf="!processingResend" class="las la-redo-alt"></i>
+          Resend Code
+        </button>
+        <button type="button" class="btn yellow" (click)="onStartForm()">
+          <i *ngIf="processingStart" class="las la-circle-notch la-spin"></i>
+          <i *ngIf="!processingStart" class="las la-play"></i> Start
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-container>

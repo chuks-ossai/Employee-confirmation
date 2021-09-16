@@ -1,0 +1,27 @@
+<div class="home-container">
+  <div class="left-side">
+    <app-card
+      [loading]="loading"
+      [transactions]="transactions"
+      [activeIndex]="currentDetailRowIndex"
+      (onFormSelect)="onShowRenderer($event)"
+    ></app-card>
+  </div>
+  <div class="right-side">
+    <app-form-renderer
+      #renderer
+      [width]="34"
+      [show]="showRenderer"
+      [data]="rendererJson"
+      [showSave]="true"
+      [isSecondaryBusy]="isSaving$ | async"
+      (formSave)="onRendererSave($event)"
+      [showSubmit]="true"
+      [submitText]="'Complete'"
+      [isBusy]="isCompleting$ | async"
+      (formSubmit)="onRendererComplete($event)"
+      (cancelClick)="onRendererCancel()"
+      [loading]="loading"
+    ></app-form-renderer>
+  </div>
+</div>

@@ -1,0 +1,502 @@
+<div *ngIf="loading" class="header-loading">
+  <ngx-shimmer-loading
+    class="mt-24"
+    [shape]="'rect'"
+    [width]="'180px'"
+    [height]="'14px'"
+  ></ngx-shimmer-loading>
+  <ngx-shimmer-loading
+    [shape]="'rect'"
+    [width]="'230px'"
+    [height]="'20px'"
+  ></ngx-shimmer-loading>
+</div>
+<div *ngIf="loading" class="body">
+  <ngx-shimmer-loading
+    *ngFor="let id of [1, 2, 3, 4, 5]"
+    [shape]="'rect'"
+    [width]="'100%'"
+    [height]="'60px'"
+  ></ngx-shimmer-loading>
+</div>
+<div *ngIf="loading" class="footer-loading">
+  <ngx-shimmer-loading
+    [shape]="'rect'"
+    [width]="'100px'"
+    [height]="'80%'"
+    class="mr-16 mt-5"
+  ></ngx-shimmer-loading>
+  <ngx-shimmer-loading
+    [shape]="'rect'"
+    [width]="'100px'"
+    [height]="'80%'"
+    class="mt-5"
+  ></ngx-shimmer-loading>
+</div>
+
+<div *ngIf="!loading && transformedData" class="header">
+  <h5 class="d-block" [ngStyle]="getStyles()">
+    {{ header && header.title ? header.title : "Form Renderer" }}
+  </h5>
+  <span class="d-block" *ngIf="header && header.subTitle">{{
+    header && header.subTitle
+      ? header.subTitle
+      : "Displays already created form controls"
+  }}</span>
+</div>
+<div class="body" *ngIf="!loading && transformedData && isAccessible">
+  <form class="mx-3" novalidate [formGroup]="this.fs.f" (ngSubmit)="onSubmit()">
+    <div
+      *ngFor="let formElement of transformedData; let i = index"
+      [ngSwitch]="formElement.widget_id"
+    >
+      <!-- Text Box Renderer-->
+      <div class="row mb-4" *ngSwitchCase="formWidgetType.text_box">
+        <div class="col-12 fbl-col">
+          <label
+            class="_center"
+            [class.required]="toJson(formElement!.validationType)?.required"
+            >{{ formElement.label }}:</label
+          >
+        </div>
+        <div class="col-12 fbi-col">
+          <input
+            formControlName="{{ formElement.field_name }}"
+            class="mat-form-field"
+            type="text"
+          />
+        </div>
+
+        <div
+          *ngIf="submitted && this.fs.f.get(formElement!.field_name)?.errors"
+          class="invalid-feedback"
+        >
+          <div *ngIf="this.fs.f.get(formElement!.field_name)?.errors?.required">
+            {{ formElement.label }} is required
+          </div>
+        </div>
+      </div>
+      <!-- / End Text Box Renderer-->
+
+      <!-- Number Text Box Renderer-->
+      <div class="row mb-4" *ngSwitchCase="formWidgetType.number_text_box">
+        <div class="col-12 fbl-col">
+          <label
+            class="_center"
+            [class.required]="toJson(formElement!.validationType)?.required"
+            >{{ formElement.label }}:</label
+          >
+        </div>
+        <div class="col-12 fbi-col">
+          <input
+            formControlName="{{ formElement.field_name }}"
+            class="mat-form-field"
+            type="number"
+          />
+        </div>
+
+        <div
+          *ngIf="submitted && this.fs.f.get(formElement!.field_name)?.errors"
+          class="invalid-feedback"
+        >
+          <div *ngIf="this.fs.f.get(formElement!.field_name)?.errors?.required">
+            {{ formElement.label }} is required
+          </div>
+        </div>
+      </div>
+      <!-- / End Number Text Box Renderer-->
+
+      <!-- Simple Drop Down Renderer-->
+      <div class="row mb-4" *ngSwitchCase="formWidgetType.drop_down">
+        <div class="col-12 fbl-col">
+          <label
+            class="_center"
+            [class.required]="toJson(formElement!.validationType)?.required"
+            >{{ formElement.label }}:</label
+          >
+        </div>
+        <div class="col-12 fbi-col">
+          <select
+            [id]="formElement.field_name"
+            [formControlName]="formElement.field_name"
+          >
+            <option
+              *ngFor="let opt of formElement.optionsData"
+              [value]="opt.value"
+            >
+              {{ opt.label }}
+            </option>
+          </select>
+        </div>
+
+        <div
+          *ngIf="submitted && this.fs.f.get(formElement!.field_name)?.errors"
+          class="invalid-feedback"
+        >
+          <div *ngIf="this.fs.f.get(formElement!.field_name)?.errors?.required">
+            {{ formElement.label }} is required
+          </div>
+        </div>
+      </div>
+      <!-- / End Simple Drop Down Renderer-->
+
+      <!-- Text Area Renderer-->
+      <div class="row mb-4" *ngSwitchCase="formWidgetType.text_area">
+        <div class="col-12 fbl-col">
+          <label
+            class="_center"
+            [class.required]="toJson(formElement!.validationType)?.required"
+            >{{ formElement.label }}:</label
+          >
+        </div>
+        <div class="col-12 fbi-col">
+          <textarea
+            formControlName="{{ formElement.field_name }}"
+            rows="4"
+            class="mat-form-field"
+          ></textarea>
+        </div>
+
+        <div
+          *ngIf="submitted && this.fs.f.get(formElement!.field_name)?.errors"
+          class="invalid-feedback"
+        >
+          <div *ngIf="this.fs.f.get(formElement!.field_name)?.errors?.required">
+            {{ formElement.label }} is required
+          </div>
+        </div>
+      </div>
+      <!-- / End Text Area Renderer-->
+
+      <!-- Date Picker Renderer-->
+      <div class="row mb-4" *ngSwitchCase="formWidgetType.date_picker">
+        <div class="col-12 fbl-col">
+          <label
+            class="_center"
+            [class.required]="toJson(formElement!.validationType)?.required"
+            >{{ formElement.label }}:</label
+          >
+        </div>
+        <div class="col-12 fbi-col">
+          <input
+            formControlName="{{ formElement.field_name }}"
+            class="mat-form-field"
+            type="date"
+          />
+        </div>
+
+        <div
+          *ngIf="submitted && this.fs.f.get(formElement!.field_name)?.errors"
+          class="invalid-feedback"
+        >
+          <div *ngIf="this.fs.f.get(formElement!.field_name)?.errors?.required">
+            {{ formElement.label }} is required
+          </div>
+        </div>
+      </div>
+      <!-- / End Date Picker Renderer-->
+
+      <!-- Check Box Renderer-->
+      <div class="row mb-4" *ngSwitchCase="formWidgetType.check_box">
+        <div class="col-12 fbl-col">
+          <label
+            class=""
+            [class.required]="toJson(formElement!.validationType)?.required"
+            >{{ formElement.label }}:</label
+          >
+        </div>
+        <div class="col-12 fbi-col">
+          <input
+            formControlName="{{ formElement.field_name }}"
+            type="checkbox"
+          />
+        </div>
+
+        <div
+          *ngIf="submitted && this.fs.f.get(formElement!.field_name)?.errors"
+          class="invalid-feedback"
+        >
+          <div *ngIf="this.fs.f.get(formElement!.field_name)?.errors?.required">
+            {{ formElement.label }} is required
+          </div>
+        </div>
+      </div>
+      <!-- / End Check Box Renderer-->
+
+      <!-- File Picker Renderer-->
+      <div class="row mb-4" *ngSwitchCase="formWidgetType.file_picker">
+        <div class="col-12 fbl-col">
+          <label
+            class=""
+            [class.required]="toJson(formElement!.validationType)?.required"
+            >{{ formElement.label }}:</label
+          >
+        </div>
+
+        <div
+          *ngIf="!readonly"
+          class="drop-zone-container"
+          appFilePicker
+          #dropZonePicker="appFilePicker"
+          name="my-filepicker"
+          (filesChanged)="onFilesChanged($event, formElement.field_name)"
+          (filesReset)="resetFilePicker()"
+        >
+          <i
+            *ngIf="!fs.f.get(formElement.field_name).value"
+            class="las la-file-upload 2x"
+          ></i>
+          <span *ngIf="!fs.f.get(formElement.field_name).value"
+            >Drag & Drop Files</span
+          >
+          <div *ngIf="fs.f.get(formElement.field_name).value">
+            <i class="las la-times-circle 3x mx-auto"></i>
+            <p>File Name: {{ fs.f.get(formElement.field_name).value.name }}</p>
+            <p>
+              File Size: {{ fs.f.get(formElement.field_name).value.size }} bytes
+            </p>
+          </div>
+        </div>
+        <div
+          *ngIf="readonly"
+          class="col-12 fbi-col d-flex justify-content-center"
+        >
+          <button
+            (click)="downloadFile(formElement)"
+            class=""
+            mdbBtn
+            type="button"
+            color="warning"
+            rounded="true"
+            size="sm"
+            outline="true"
+            mdbWavesEffect
+          >
+            <i class="fa fa-cloud-download"></i>&nbsp;&nbsp;View/Download File
+          </button>
+        </div>
+
+        <div
+          *ngIf="submitted && this.fs.f.get(formElement!.field_name)?.errors"
+          class="invalid-feedback"
+        >
+          <div *ngIf="this.fs.f.get(formElement!.field_name)?.errors?.required">
+            {{ formElement.label }} is required
+          </div>
+        </div>
+      </div>
+      <!-- / End File Picker Renderer-->
+
+      <!-- Regex Text Box Renderer-->
+      <div class="row mb-4" *ngSwitchCase="formWidgetType.regex_text_box">
+        <div class="col-12 fbl-col">
+          <label
+            class="_center"
+            [class.required]="toJson(formElement!.validationType)?.required"
+            >{{ formElement.label }}:</label
+          >
+        </div>
+        <div class="col-12 fbi-col">
+          <!-- <input  (paste)="regexPasteEventHandler($event)" (keypress)="regexEventHandler($event, formElement.extra)" formControlName="{{ formElement.field_name }}" class="mat-form-field " type="text"> -->
+          <input
+            formControlName="{{ formElement.field_name }}"
+            class="mat-form-field"
+            type="text"
+          />
+        </div>
+
+        <div
+          *ngIf="submitted && this.fs.f.get(formElement!.field_name)?.errors"
+          class="invalid-feedback"
+        >
+          <div *ngIf="this.fs.f.get(formElement!.field_name)?.errors?.required">
+            {{ formElement.label }} is required
+          </div>
+        </div>
+      </div>
+      <!-- / End Regex Text Box Renderer-->
+
+      <!-- Dictionary Drop Down Renderer-->
+      <div class="row mb-4" *ngSwitchCase="formWidgetType.dictionary_drop_down">
+        <div class="col-12 fbl-col">
+          <label
+            class="_center"
+            [class.required]="toJson(formElement!.validationType)?.required"
+            >{{ formElement.label }}:</label
+          >
+        </div>
+        <div class="col-12 fbi-col">
+          <select
+            [id]="formElement.field_name"
+            [formControlName]="formElement.field_name"
+          >
+            <option
+              *ngFor="let opt of formElement.optionsData"
+              [value]="opt.value"
+            >
+              {{ opt.label }}
+            </option>
+          </select>
+        </div>
+
+        <div
+          *ngIf="submitted && this.fs.f.get(formElement!.field_name)?.errors"
+          class="invalid-feedback"
+        >
+          <div *ngIf="this.fs.f.get(formElement!.field_name)?.errors?.required">
+            {{ formElement.label }} is required
+          </div>
+        </div>
+      </div>
+      <!-- / End Dictionary Drop Down Renderer-->
+
+      <!-- Dataset Drop Down Renderer-->
+      <div class="row mb-4" *ngSwitchCase="formWidgetType.dataset_drop_down">
+        <div class="col-12 fbl-col">
+          <label
+            class="_center"
+            [class.required]="toJson(formElement!.validationType)?.required"
+            >{{ formElement.label }}:</label
+          >
+        </div>
+        <div class="col-12 fbi-col">
+          <select
+            [id]="formElement.field_name"
+            [formControlName]="formElement.field_name"
+          >
+            <option
+              *ngFor="let opt of formElement.optionsData"
+              [value]="opt.code"
+            >
+              {{ opt.description }}
+            </option>
+          </select>
+        </div>
+
+        <div
+          *ngIf="submitted && this.fs.f.get(formElement!.field_name)?.errors"
+          class="invalid-feedback"
+        >
+          <div *ngIf="this.fs.f.get(formElement!.field_name)?.errors?.required">
+            {{ formElement.label }} is required
+          </div>
+        </div>
+      </div>
+      <!-- / End Dataset Drop Down Renderer-->
+
+      <!-- Date Picker Renderer-->
+      <div class="row mb-4" *ngSwitchCase="formWidgetType.time_picker">
+        <div class="col-12 fbl-col">
+          <label
+            class="_center"
+            [class.required]="toJson(formElement!.validationType)?.required"
+            >{{ formElement.label }}:</label
+          >
+        </div>
+        <div class="col-12 fbi-col">
+          <input
+            formControlName="{{ formElement.field_name }}"
+            class="mat-form-field"
+            type="time"
+          />
+        </div>
+
+        <div
+          *ngIf="submitted && this.fs.f.get(formElement!.field_name)?.errors"
+          class="invalid-feedback"
+        >
+          <div *ngIf="this.fs.f.get(formElement!.field_name)?.errors?.required">
+            {{ formElement.label }} is required
+          </div>
+        </div>
+      </div>
+      <!-- / End Date Picker Renderer-->
+
+      <!-- Cascade Drop Down Renderer-->
+      <div class="row mb-4" *ngSwitchCase="formWidgetType.cascading_drop_down">
+        <div class="col-12 fbl-col">
+          <label
+            class="_center"
+            [class.required]="toJson(formElement!.validationType)?.required"
+            >{{ formElement.label }}:</label
+          >
+        </div>
+        <div class="col-12 fbi-col">
+          <select
+            [id]="formElement.field_name"
+            [formControlName]="formElement.field_name"
+          >
+            <option
+              *ngFor="let opt of formElement.optionsData"
+              [value]="opt.code"
+            >
+              {{ opt.description }}
+            </option>
+          </select>
+        </div>
+
+        <div
+          *ngIf="submitted && this.fs.f.get(formElement!.field_name)?.errors"
+          class="invalid-feedback"
+        >
+          <div *ngIf="this.fs.f.get(formElement!.field_name)?.errors?.required">
+            {{ formElement.label }} is required
+          </div>
+        </div>
+      </div>
+      <!-- / End Cascade Drop Down Renderer-->
+
+      <!-- Sub Heading Renderer-->
+      <div class="row mb-4" *ngSwitchCase="formWidgetType.sub_heading">
+        <div class="col-12 fbl-col sub-heading">
+          <label
+            class="_center"
+            [class.required]="toJson(formElement!.validationType)?.required"
+            >{{ formElement.label }}</label
+          >
+        </div>
+      </div>
+      <!-- / End Sub Heading Renderer-->
+
+      <!-- Label Renderer-->
+      <div class="row mb-4" *ngSwitchCase="formWidgetType.label">
+        <div class="col-12 fbl-col desc-label">
+          <label
+            class="_center"
+            [class.required]="toJson(formElement!.validationType)?.required"
+            >{{ formElement.label }}</label
+          >
+        </div>
+      </div>
+      <!-- / End Label Renderer-->
+    </div>
+  </form>
+</div>
+<div *ngIf="!loading && !isAccessible" class="body no-access-messsage">
+  <div class="row mt-2">
+    <div class="col-12">
+      <i class="fa fa-ban fa-3x text-danger d-block text-center mb-4"></i>
+      <p class="font-weight-bolder text-center h6">
+        You don't have access to this form
+      </p>
+    </div>
+  </div>
+</div>
+<div *ngIf="!loading && transformedData" class="footer">
+  <button
+    type="button"
+    class="btn"
+    *ngIf="showSave"
+    [disabled]="disableSave"
+    (click)="onSave()"
+  >
+    &nbsp;&nbsp;<span *ngIf="isSecondaryBusy">
+      <i class="fa fa-spinner fa-spin fa-lg fa-fw"></i> </span
+    >&nbsp;&nbsp;&nbsp;Save and Next&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </button>
+</div>
+
+<div *ngIf="!loading && !transformedData" class="no-data">
+  <h4>No Form selected</h4>
+  <p>Please select a card by the left to load it's form</p>
+</div>

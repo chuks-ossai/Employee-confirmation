@@ -1,0 +1,198 @@
+/* You can add global styles to this file, and also import other style files */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+body,
+html {
+  height: 100%;
+  // overflow: hidden;
+  font-family: "Montserrat", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background: #f5f6f6;
+}
+
+.app-loading {
+  position: relative;
+  display: flex;
+  height: 100%;
+  color: rgb(110, 110, 110);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: "Montserrat", sans-serif;
+  text-shadow: 0px 1px 1px #4d4d4d;
+  overflow: hidden;
+}
+
+.app-loading .spinner {
+  height: 200px;
+  width: 200px;
+  animation: rotate 2s linear infinite;
+  transform-origin: center center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index: -1;
+}
+
+.app-loading .spinner .path {
+  stroke-dasharray: 1, 200;
+  stroke-dashoffset: 0;
+  animation: dash 1.5s ease-in-out infinite;
+  stroke-linecap: round;
+  stroke: rgb(240, 240, 240);
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -35px;
+  }
+  100% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -124px;
+  }
+}
+
+button.btn i {
+  margin-right: 3px;
+}
+
+button.btn {
+  color: #000;
+  margin: 0 2px;
+  font-size: 15px;
+  padding: 10px 15px;
+  display: inline-block;
+  text-decoration: none;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border: none;
+  background: #ddd;
+  cursor: pointer;
+}
+
+button.btn.giant {
+  padding: 15px 25px;
+  font-size: 1.5em;
+}
+
+button.btn.tiny {
+  padding: 5px 10px;
+  font-size: 0.9em;
+}
+
+button.btn:hover {
+  -webkit-box-shadow: 0 4px 6px -3px #aaa;
+  -moz-box-shadow: 0 4px 6px -3px #aaa;
+  box-shadow: 0 4px 6px -3px #aaa;
+}
+
+button.btn.grey {
+  color: #222;
+  background-color: #f5f5f5;
+  // background-image: url(images/fallback-gradient.png);
+  background-image: -webkit-gradient(
+    linear,
+    0% 0%,
+    0% 100%,
+    from(#f5f5f5),
+    to(#dddddd)
+  );
+  background-image: -webkit-linear-gradient(top, #f5f5f5, #dddddd);
+  background-image: -moz-linear-gradient(top, #f5f5f5, #dddddd);
+  background-image: -ms-linear-gradient(top, #f5f5f5, #dddddd);
+  background-image: -o-linear-gradient(top, #f5f5f5, #dddddd);
+}
+
+// button.btn.grey:active {
+//   margin-top: 10px;
+//   -webkit-box-shadow: inset 0 4px 6px -3px #999;
+//   -moz-box-shadow: inset 0 4px 6px -3px #999;
+//   box-shadow: inset 0 4px 6px -3px #999;
+// }
+
+button.btn.red {
+  color: #fff;
+  background-color: #c00;
+  // background-image: url(images/fallback-gradient.png);
+  background-image: -webkit-gradient(
+    linear,
+    0% 0%,
+    0% 100%,
+    from(#c00),
+    to(#8a0000)
+  );
+  background-image: -webkit-linear-gradient(top, #c00, #8a0000);
+  background-image: -moz-linear-gradient(top, #c00, #8a0000);
+  background-image: -ms-linear-gradient(top, #c00, #8a0000);
+  background-image: -o-linear-gradient(top, #c00, #8a0000);
+}
+
+button.btn.red:hover,
+button.btn.yellow:hover {
+  color: #fff;
+
+  // background-image: url(images/fallback-gradient.png);
+  background-image: -webkit-gradient(
+    linear,
+    0% 0%,
+    0% 100%,
+    from(#333),
+    to(#000)
+  );
+  background-image: -webkit-linear-gradient(top, #333, #000);
+  background-image: -moz-linear-gradient(top, #333, #000);
+  background-image: -ms-linear-gradient(top, #333, #000);
+  background-image: -o-linear-gradient(top, #333, #000);
+}
+
+button.btn.red:hover {
+  background-color: #d45959;
+}
+
+button.btn.yellow:hover {
+  background-color: #eea162;
+}
+
+// button.btn.red:active,
+// button.btn.yellow:active {
+//   margin-top: 10px;
+//   -webkit-box-shadow: inset 0 6px 6px -3px #000;
+//   -moz-box-shadow: inset 0 6px 6px -3px #000;
+//   box-shadow: inset 0 6px 6px -3px #000;
+// }
+
+button.btn.yellow {
+  color: #fff;
+  background-color: hsl(31deg 100% 54%);
+  // background-image: url(images/fallback-gradient.png);
+  background-image: -webkit-gradient(
+    linear,
+    0% 0%,
+    0% 100%,
+    from(hsl(31deg 100% 54%)),
+    to(#f7a600)
+  );
+  background-image: -webkit-linear-gradient(top, hsl(31deg 100% 54%), #f7a600);
+  background-image: -moz-linear-gradient(top, hsl(31deg 100% 54%), #f7a600);
+  background-image: -ms-linear-gradient(top, hsl(31deg 100% 54%), #f7a600);
+  background-image: -o-linear-gradient(top, hsl(31deg 100% 54%), #f7a600);
+  text-shadow: #e79b00 1px 1px 0;
+}

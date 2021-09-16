@@ -1,0 +1,93 @@
+<header class="c-header">
+  <div class="c-header__wrapper o-wrapper">
+    <div class="brand">
+      <div class="c-nav">
+        <input class="c-nav__check" id="navmobile" type="checkbox" />
+
+        <label
+          class="c-nav__btn material-icons"
+          for="navmobile"
+          onclick=""
+          aria-label="switch to open-close nav menu"
+          ><i class="las la-bars"></i
+        ></label>
+
+        <nav class="c-nav__container">
+          <label
+            class="c-nav__btn c-nav__btn--close material-icons"
+            for="navmobile"
+            onclick=""
+            aria-label="switch to open-close nav menu"
+            ><i class="las la-times"></i
+          ></label>
+
+          <label
+            class="c-nav__click-guard"
+            for="navmobile"
+            aria-hidden="true"
+          ></label>
+
+          <div class="c-nav__list">
+            <!-- <li class="c-nav__item"> -->
+            <app-card
+              [loading]="loadingTransactions$ | async"
+              [transactions]="transactions$ | async"
+              [activeIndex]="currentDetailRowIndex"
+              (onFormSelect)="onShowRenderer($event)"
+            ></app-card>
+          </div>
+        </nav>
+      </div>
+
+      <h4 class="c-logo">
+        <img
+          src="assets/images/xceed365-logo-black.png"
+          width="100"
+          height="24.5"
+          alt="Xceed365"
+        />
+      </h4>
+    </div>
+
+    <div class="signout" (click)="onSignOut()">
+      <p>
+        Exit <span><i class="las la-sign-out-alt"></i></span>
+      </p>
+    </div>
+  </div>
+</header>
+
+<main class="c-main o-wrapper">
+  <app-employee-info
+    [data]="(transactions$ | async) && (transactions$ | async)[0]"
+    [loading]="loadingTransactions$ | async"
+    (submitClick)="onSubmit()"
+  ></app-employee-info>
+
+  <section class="form-info">
+    <app-home
+      #home
+      [transactions]="transactions$ | async"
+      [showRenderer]="showRenderer"
+      [currentDetailRowData]="currentDetailRowData"
+      [currentDetailRowIndex]="currentDetailRowIndex"
+      [rendererJson]="rendererJson"
+      [loading]="loadingTransactions$ | async"
+      [refId]="refId"
+      [userCode]="userCode"
+    ></app-home>
+  </section>
+</main>
+<footer>
+  <p>Powered by XCEED365 &copy; 2021</p>
+</footer>
+<app-modal
+  [closeOnOutsideClick]="false"
+  [showCloseIcon]="false"
+  (onStart)="onStart($event)"
+  (onResend)="onResend()"
+  [errorMsg]="errorMsg"
+  [successMsg]="resentData$ | async"
+></app-modal>
+
+<app-spinner></app-spinner>

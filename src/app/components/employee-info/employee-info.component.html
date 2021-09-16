@@ -1,0 +1,92 @@
+<section class="employee-info">
+  <div class="info-container">
+    <div class="passport">
+      <ngx-shimmer-loading
+        *ngIf="loading"
+        [shape]="'circle'"
+        [width]="'100px'"
+        [height]="'100px'"
+      ></ngx-shimmer-loading>
+      <img
+        *ngIf="!loading && !data?.employee_image"
+        src="assets/images/user-thumbnail.jpeg"
+        alt="user-passport-thumbnail"
+        width="90"
+        height="90"
+      />
+      <img
+        *ngIf="!loading && data?.employee_image"
+        [src]="'data:image/png;base64,' + data?.employee_image"
+        alt="user-passport"
+        width="90"
+        height="90"
+      />
+    </div>
+    <div class="details">
+      <div class="details-left">
+        <p class="employee-name">
+          <span class="desc">Name: </span>
+          <span *ngIf="!loading" class="f-bold">
+            {{ !loading && data?.employee_name }}
+          </span>
+          <ngx-shimmer-loading
+            class="d-inline"
+            *ngIf="loading"
+            [shape]="'rect'"
+            [width]="'100%'"
+            [height]="'12px'"
+          ></ngx-shimmer-loading>
+        </p>
+        <!-- <p class="employee-email">
+          <span class="desc f-bold">Email: </span>{{ data?.username }}
+        </p> -->
+      </div>
+
+      <div class="details-right">
+        <p class="employee-email">
+          <span class="desc">Responder Email: </span>
+          <span *ngIf="!loading" class="f-bold">
+            {{ data?.ext_user_email }}
+          </span>
+          <ngx-shimmer-loading
+            class="d-inline"
+            *ngIf="loading"
+            [shape]="'rect'"
+            [width]="'100%'"
+            [height]="'12px'"
+          ></ngx-shimmer-loading>
+        </p>
+        <!-- <p class="employee-email">
+          <span class="desc f-bold">Process: </span>{{ data?.process_id_text }}
+        </p>
+        <p class="employee-email">
+          <span class="desc f-bold">Transaction Date: </span
+          >{{ data?.transaction_date | dateFormat }}
+        </p> -->
+      </div>
+    </div>
+
+    <div class="complete-btn">
+      <ngx-shimmer-loading
+        *ngIf="loading"
+        [shape]="'rect'"
+        [width]="'200px'"
+        [height]="'40px'"
+      ></ngx-shimmer-loading>
+      <button
+        type="button"
+        class="btn yellow"
+        *ngIf="!loading"
+        [disabled]="disableSubmit"
+        (click)="onSubmit()"
+      >
+        &nbsp;&nbsp;
+        <span *ngIf="isBusy"
+          ><i class="fa fa-spinner fa-spin fa-lg fa-fw"></i
+        ></span>
+        <span *ngIf="!isBusy"><i class="fa fa-floppy-o"></i></span>
+        &nbsp;&nbsp;&nbsp; Finish and Submit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </button>
+    </div>
+  </div>
+</section>

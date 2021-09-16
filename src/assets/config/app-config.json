@@ -1,0 +1,18 @@
+{
+  "env": {
+    "name": "DEV"
+  },
+
+  "data": {
+    "api": "https://xceedreferencesapi.azurewebsites.net/api"
+  },
+
+  "appInsights": {
+    "instrumentationKey": ""
+  },
+
+  "logging": {
+    "console": true,
+    "appInsights": false
+  }
+}
